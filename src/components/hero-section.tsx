@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { HeroHeader } from '@/components/header'
 import { InfiniteSlider } from '@/components/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
+import { motion } from 'framer-motion'
 
 // Floating particles component - Fixed positions to prevent hydration errors
 const FloatingParticles = () => {
@@ -21,14 +22,24 @@ const FloatingParticles = () => {
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {particles.map((particle, i) => (
-                <div
+                <motion.div
                     key={i}
-                    className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-float opacity-60"
+                    className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-60"
                     style={{
                         left: particle.left,
                         top: particle.top,
-                        animationDelay: particle.delay,
-                        animationDuration: particle.duration,
+                    }}
+                    animate={{ 
+                        y: [0, -30, 0],
+                        x: [0, 15, 0, -15, 0],
+                        scale: [1, 1.5, 1],
+                        rotate: [0, 180, 360],
+                    }}
+                    transition={{
+                        duration: parseFloat(particle.duration),
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: parseFloat(particle.delay),
                     }}
                 />
             ))}
@@ -85,14 +96,21 @@ const FloatingCodeSnippets = () => {
             {/* Left side snippets */}
             <div className="fixed left-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
                 {leftSnippets.map((snippet, i) => (
-                    <div
+                    <motion.div
                         key={`left-${i}`}
-                        className="absolute animate-fade-up opacity-0"
-                        style={{
-                            top: snippet.top,
-                            animationDelay: snippet.delay,
-                            animationDuration: '1s',
-                            animationFillMode: 'forwards'
+                        className="absolute"
+                        style={{ top: snippet.top }}
+                        initial={{ opacity: 0, x: -100, rotateY: 90 }}
+                        animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                        transition={{ 
+                            duration: 0.8, 
+                            delay: parseFloat(snippet.delay),
+                            ease: "easeOut"
+                        }}
+                        whileHover={{ 
+                            scale: 1.05,
+                            rotate: 0,
+                            transition: { duration: 0.3 }
                         }}
                     >
                         <div className="bg-gray-900/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 border border-gray-700/50 shadow-xl transform rotate-[-2deg] hover:rotate-0 transition-transform duration-300">
@@ -106,21 +124,28 @@ const FloatingCodeSnippets = () => {
                                 <code>{snippet.code}</code>
                             </pre>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
 
             {/* Right side snippets */}
             <div className="fixed right-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
                 {rightSnippets.map((snippet, i) => (
-                    <div
+                    <motion.div
                         key={`right-${i}`}
-                        className="absolute animate-fade-up opacity-0"
-                        style={{
-                            top: snippet.top,
-                            animationDelay: snippet.delay,
-                            animationDuration: '1s',
-                            animationFillMode: 'forwards'
+                        className="absolute"
+                        style={{ top: snippet.top }}
+                        initial={{ opacity: 0, x: 100, rotateY: -90 }}
+                        animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                        transition={{ 
+                            duration: 0.8, 
+                            delay: parseFloat(snippet.delay),
+                            ease: "easeOut"
+                        }}
+                        whileHover={{ 
+                            scale: 1.05,
+                            rotate: 0,
+                            transition: { duration: 0.3 }
                         }}
                     >
                         <div className="bg-gray-900/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 border border-gray-700/50 shadow-xl transform rotate-[2deg] hover:rotate-0 transition-transform duration-300">
@@ -134,7 +159,7 @@ const FloatingCodeSnippets = () => {
                                 <code>{snippet.code}</code>
                             </pre>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
         </>
@@ -155,27 +180,48 @@ const FloatingTechIcons = () => {
     return (
         <div className="fixed inset-0 pointer-events-none z-10 lg:block xl:hidden">
             {techIcons.map((tech, i) => (
-                <div
+                <motion.div
                     key={i}
-                    className="absolute animate-fade-up opacity-0 group"
+                    className="absolute group"
                     style={{
                         left: tech.left,
                         right: tech.right,
                         top: tech.top,
-                        animationDelay: tech.delay,
-                        animationDuration: '1s',
-                        animationFillMode: 'forwards'
+                    }}
+                    initial={{ opacity: 0, scale: 0.5, rotate: 180 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{ 
+                        duration: 0.8, 
+                        delay: parseFloat(tech.delay),
+                        ease: "backOut"
+                    }}
+                    whileHover={{ 
+                        scale: 1.2,
+                        rotate: [0, -10, 10, 0],
+                        transition: { duration: 0.3 }
                     }}
                 >
-                    <div className="relative">
+                    <motion.div 
+                        className="relative"
+                        animate={{ 
+                            y: [0, -10, 0],
+                            rotate: [0, 5, -5, 0]
+                        }}
+                        transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: i * 0.5
+                        }}
+                    >
                         <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300 animate-float">
                             {tech.icon}
                         </div>
                         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900/90 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
                             {tech.name}
                         </div>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             ))}
         </div>
     )
@@ -216,7 +262,12 @@ export default function HeroSection() {
             <main className="overflow-x-hidden">
                 <FloatingCodeSnippets />
                 <FloatingTechIcons />
-                <section className="relative min-h-screen flex flex-col">
+                <motion.section 
+                    className="relative min-h-screen flex flex-col"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
+                >
                     <FloatingParticles />
                     
                     {/* Enhanced animated background with gradient overlay */}
@@ -239,28 +290,59 @@ export default function HeroSection() {
                             }}
                         />
                         
-                        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 lg:flex-row lg:gap-10">
-                            <div className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left">
+                        <motion.div 
+                            className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 lg:flex-row lg:gap-10"
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                        >
+                            <motion.div 
+                                className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left"
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                            >
                                 <div className="space-y-2">
-                                    <div className="inline-block animate-fade-up">
+                                    <motion.div 
+                                        className="inline-block"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.4 }}
+                                    >
                                         <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 border border-blue-200 dark:border-blue-800 rounded-full text-blue-700 dark:text-blue-300">
                                             👋 Welcome to my portfolio
                                         </span>
-                                    </div>
-                                    <h1 className="animate-fade-up anim-delay-1 max-w-2xl bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-balance text-4xl lg:text-5xl xl:text-6xl font-bold text-transparent transition-all duration-500 hover:-translate-y-1">
-                                        Hi, I&apos;m Hazpol
-                                    </h1>
+                                    </motion.div>
+                                    <motion.h1 
+                                        className="max-w-2xl bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-balance text-4xl lg:text-5xl xl:text-6xl font-bold text-transparent transition-all duration-500 hover:-translate-y-1"
+                                        initial={{ opacity: 0, y: 30 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.8, delay: 0.6 }}
+                                        whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                                    >
+                                        Hi, I&apos;m Haz
+                                    </motion.h1>
                                 </div>
-                                <p className="animate-fade-up anim-delay-2 mt-3 text-base lg:text-lg text-muted-foreground">
+                                <motion.p 
+                                    className="mt-3 text-base lg:text-lg text-muted-foreground"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.8 }}
+                                >
                                     I&apos;m a
                                     {' '}
                                     <span className="relative font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                                         {typed}
                                         <span className="ml-1 inline-block h-5 w-[2px] translate-y-[2px] bg-blue-500 animate-pulse"></span>
                                     </span>
-                                </p>
-                                <p className="animate-fade-up anim-delay-3 mt-4 max-w-2xl text-pretty text-base lg:text-lg leading-relaxed text-muted-foreground">
-                                    Full‑stack developer crafting fast, accessible web apps with
+                                </motion.p>
+                                <motion.p 
+                                    className="mt-4 max-w-2xl text-pretty text-base lg:text-lg leading-relaxed text-muted-foreground"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 1.0 }}
+                                >
+                                    Web developer crafting fast, accessible web apps with
                                     {' '}
                                     <span className="relative whitespace-nowrap font-medium text-foreground after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full">Next.js</span>,
                                     {' '}
@@ -271,31 +353,62 @@ export default function HeroSection() {
                                     <span className="relative whitespace-nowrap font-medium text-foreground after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full">Supabase</span>.
                                     {' '}
                                     <span className="font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">THE BEST VIBE CODER AVAILABLE IN THE MARKET :D</span>
-                                </p>
+                                </motion.p>
 
-                                <div className="animate-fade-up anim-delay-4 mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
-                                    <Button
-                                        asChild
-                                        size="lg"
-                                        className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-base font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/25">
-                                        <Link href="#projects">
-                                            <span className="relative z-10 text-white">View Projects</span>
-                                            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                                        </Link>
-                                    </Button>
-                                    <Button
-                                        asChild
-                                        size="lg"
-                                        variant="outline"
-                                        className="group border-2 border-gradient-to-r from-blue-500 to-purple-500 px-8 py-3 text-base font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-blue-400 dark:hover:border-purple-400">
-                                        <Link href="#contact">
-                                            <span className="relative bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-purple-500">My Socials</span>
-                                        </Link>
-                                    </Button>
-                                </div>
-                            </div>
-                            <div className="lg:w-1/2 flex justify-center">
-                                <div className="relative">
+                                <motion.div 
+                                    className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 1.2 }}
+                                >
+                                    <motion.div
+                                        whileHover={{ scale: 1.05, y: -3 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                    >
+                                        <Button
+                                            asChild
+                                            size="lg"
+                                            className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-base font-medium transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25">
+                                            <Link href="#projects">
+                                                <span className="relative z-10 text-white">View Projects</span>
+                                                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                            </Link>
+                                        </Button>
+                                    </motion.div>
+                                    <motion.div
+                                        whileHover={{ scale: 1.05, y: -3 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                    >
+                                        <Button
+                                            asChild
+                                            size="lg"
+                                            variant="outline"
+                                            className="group border-2 border-gradient-to-r from-blue-500 to-purple-500 px-8 py-3 text-base font-medium transition-all duration-300 hover:shadow-lg hover:border-blue-400 dark:hover:border-purple-400">
+                                            <Link href="#contact">
+                                                <span className="relative bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-purple-500">My Socials</span>
+                                            </Link>
+                                        </Button>
+                                    </motion.div>
+                                </motion.div>
+                            </motion.div>
+                    
+                    {/* Right Side - Visual Elements */}
+                    <motion.div 
+                        className="lg:w-1/2 flex justify-center"
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                    >
+                        <motion.div 
+                            className="relative"
+                            whileHover={{ 
+                                        scale: 1.05,
+                                        rotate: [0, -1, 1, 0],
+                                        transition: { duration: 0.3 }
+                                    }}
+                                >
                                     <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
                                     <Image
                                         className="relative animate-float h-auto w-full max-w-[320px] lg:max-w-[380px] xl:max-w-[420px] object-contain transition-all duration-500 hover:-translate-y-2 hover:scale-105 drop-shadow-2xl"
@@ -306,52 +419,85 @@ export default function HeroSection() {
                                         sizes="(min-width: 1024px) 33vw, 66vw"
                                         priority
                                     />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+                                </motion.div>
+                    </motion.div>
+                </motion.div>
+                </div>
+                
                     {/* Tech Skills Section - Now part of the hero */}
-                    <div className="relative pb-16 pt-8">
+                    <motion.div 
+                        className="relative pb-16 pt-8"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                    >
                         {/* Background decoration */}
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/20 to-transparent dark:via-blue-950/10" />
                         
-                        <div className="group relative m-auto max-w-6xl px-6">
-                            <div className="flex flex-col items-center md:flex-row">
-                                <div className="md:max-w-44 md:border-r md:pr-6 animate-fade-up anim-delay-4">
-                                    <p className="text-center md:text-end text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                        Some of my Tech Skills
-                                    </p>
-                                </div>
-                                <div className="relative py-6 md:w-[calc(100%-11rem)] animate-fade-up anim-delay-5">
-                                    <InfiniteSlider
-                                        speedOnHover={20}
-                                        speed={40}
-                                        gap={160}>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                        <motion.div 
+                            className="group relative m-auto max-w-6xl px-6"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.8 }}
+                        >
+                            <motion.div 
+                                className="relative py-6 w-full"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 1.0 }}
+                            >
+                                <InfiniteSlider
+                                    speedOnHover={20}
+                                    speed={40}
+                                    gap={160}>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="Next.js badge" src="https://img.shields.io/badge/Next.js-000000.png?style=for-the-badge&logo=next.js&logoColor=white" />
-                                        </div>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                                        </motion.div>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="Supabase badge" src="https://img.shields.io/badge/Supabase-3FCF8E.png?style=for-the-badge&logo=supabase&logoColor=white" />
-                                        </div>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                                        </motion.div>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="Python badge" src="https://img.shields.io/badge/Python-3776AB.png?style=for-the-badge&logo=python&logoColor=white" />
-                                        </div>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                                        </motion.div>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="Java badge" src="https://img.shields.io/badge/Java-ED8B00.png?style=for-the-badge&logo=openjdk&logoColor=white" />
-                                        </div>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                                        </motion.div>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="Tailwind CSS badge" src="https://img.shields.io/badge/Tailwind_CSS-38B2AC.png?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-                                        </div>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                                        </motion.div>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="TypeScript badge" src="https://img.shields.io/badge/TypeScript-3178C6.png?style=for-the-badge&logo=typescript&logoColor=white" />
-                                        </div>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                                        </motion.div>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="Git badge" src="https://img.shields.io/badge/Git-F05032.png?style=for-the-badge&logo=git&logoColor=white" />
-                                        </div>
-                                        <div className="flex transition-transform hover:scale-[1.02]">
+                                        </motion.div>
+                                        <motion.div 
+                                            className="flex transition-transform hover:scale-[1.02]"
+                                            whileHover={{ y: -2, scale: 1.05 }}
+                                        >
                                             <Image className="mx-auto h-8 w-auto" height={32} width={260} alt="JavaScript badge" src="https://img.shields.io/badge/JavaScript-F7DF1E.png?style=for-the-badge&logo=javascript&logoColor=white" />
-                                        </div>
+                                        </motion.div>
                                     </InfiniteSlider>
 
                                     <div className="bg-linear-to-r from-background absolute inset-y-0 left-0 w-20"></div>
@@ -366,12 +512,11 @@ export default function HeroSection() {
                                         direction="right"
                                         blurIntensity={1}
                                     />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
+                                </motion.div>
+                        </motion.div>
+                    </motion.div>
+            </motion.section>
+        </main>
         </>
     )
 }
