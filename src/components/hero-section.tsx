@@ -1,12 +1,11 @@
 "use client"
 import React from 'react'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { HeroHeader } from '@/components/header'
 import { InfiniteSlider } from '@/components/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
 // Floating particles component - Fixed positions to prevent hydration errors
 const FloatingParticles = () => {
@@ -94,7 +93,7 @@ const FloatingCodeSnippets = () => {
     return (
         <>
             {/* Left side snippets */}
-            <div className="fixed left-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
+            <div className="absolute left-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
                 {leftSnippets.map((snippet, i) => (
                     <motion.div
                         key={`left-${i}`}
@@ -129,7 +128,7 @@ const FloatingCodeSnippets = () => {
             </div>
 
             {/* Right side snippets */}
-            <div className="fixed right-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
+            <div className="absolute right-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
                 {rightSnippets.map((snippet, i) => (
                     <motion.div
                         key={`right-${i}`}
@@ -228,6 +227,8 @@ const FloatingTechIcons = () => {
 }
 
 export default function HeroSection() {
+    const sectionRef = React.useRef(null)
+    const isInView = useInView(sectionRef, { once: false, amount: 0.2 })
     const [cursor, setCursor] = React.useState<{ x: number; y: number }>({ x: 0, y: 0 })
     const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const rect = e.currentTarget.getBoundingClientRect()
@@ -260,15 +261,17 @@ export default function HeroSection() {
         <>
             <HeroHeader />
             <main className="overflow-x-hidden">
-                <FloatingCodeSnippets />
                 <FloatingTechIcons />
                 <motion.section 
+                    ref={sectionRef}
                     className="relative min-h-screen flex flex-col"
+                    id="about"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                     transition={{ duration: 1 }}
                 >
                     <FloatingParticles />
+                    <FloatingCodeSnippets />
                     
                     {/* Enhanced animated background with gradient overlay */}
                     <div className="absolute inset-0 -z-20">
@@ -293,20 +296,20 @@ export default function HeroSection() {
                         <motion.div 
                             className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 lg:flex-row lg:gap-10"
                             initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
                         >
                             <motion.div 
                                 className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left"
                                 initial={{ opacity: 0, x: -50 }}
-                                animate={{ opacity: 1, x: 0 }}
+                                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
                             >
                                 <div className="space-y-2">
                                     <motion.div 
                                         className="inline-block"
                                         initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
+                                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                                         transition={{ duration: 0.6, delay: 0.4 }}
                                     >
                                         <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 border border-blue-200 dark:border-blue-800 rounded-full text-blue-700 dark:text-blue-300">
@@ -316,7 +319,7 @@ export default function HeroSection() {
                                     <motion.h1 
                                         className="max-w-2xl bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-balance text-4xl lg:text-5xl xl:text-6xl font-bold text-transparent transition-all duration-500 hover:-translate-y-1"
                                         initial={{ opacity: 0, y: 30 }}
-                                        animate={{ opacity: 1, y: 0 }}
+                                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                                         transition={{ duration: 0.8, delay: 0.6 }}
                                         whileHover={{ y: -4, transition: { duration: 0.2 } }}
                                     >
@@ -326,7 +329,7 @@ export default function HeroSection() {
                                 <motion.p 
                                     className="mt-3 text-base lg:text-lg text-muted-foreground"
                                     initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                                     transition={{ duration: 0.6, delay: 0.8 }}
                                 >
                                     I&apos;m a
@@ -339,7 +342,7 @@ export default function HeroSection() {
                                 <motion.p 
                                     className="mt-4 max-w-2xl text-pretty text-base lg:text-lg leading-relaxed text-muted-foreground"
                                     initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                                     transition={{ duration: 0.6, delay: 1.0 }}
                                 >
                                     Web developer crafting fast, accessible web apps with
@@ -358,7 +361,7 @@ export default function HeroSection() {
                                 <motion.div 
                                     className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start"
                                     initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                                     transition={{ duration: 0.6, delay: 1.2 }}
                                 >
                                     <motion.div
@@ -367,13 +370,23 @@ export default function HeroSection() {
                                         transition={{ type: "spring", stiffness: 400, damping: 17 }}
                                     >
                                         <Button
-                                            asChild
                                             size="lg"
+                                            onClick={() => {
+                                                const projectsElement = document.getElementById('projects')
+                                                if (projectsElement) {
+                                                    const headerHeight = 80
+                                                    const elementPosition = projectsElement.getBoundingClientRect().top
+                                                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight
+                                                    
+                                                    window.scrollTo({
+                                                        top: offsetPosition,
+                                                        behavior: 'smooth'
+                                                    })
+                                                }
+                                            }}
                                             className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-base font-medium transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25">
-                                            <Link href="#projects">
-                                                <span className="relative z-10 text-white">View Projects</span>
-                                                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                                            </Link>
+                                            <span className="relative z-10 text-white">View Projects</span>
+                                            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                         </Button>
                                     </motion.div>
                                     <motion.div
@@ -382,13 +395,23 @@ export default function HeroSection() {
                                         transition={{ type: "spring", stiffness: 400, damping: 17 }}
                                     >
                                         <Button
-                                            asChild
                                             size="lg"
                                             variant="outline"
+                                            onClick={() => {
+                                                const contactElement = document.getElementById('contact')
+                                                if (contactElement) {
+                                                    const headerHeight = 80
+                                                    const elementPosition = contactElement.getBoundingClientRect().top
+                                                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight
+                                                    
+                                                    window.scrollTo({
+                                                        top: offsetPosition,
+                                                        behavior: 'smooth'
+                                                    })
+                                                }
+                                            }}
                                             className="group border-2 border-gradient-to-r from-blue-500 to-purple-500 px-8 py-3 text-base font-medium transition-all duration-300 hover:shadow-lg hover:border-blue-400 dark:hover:border-purple-400">
-                                            <Link href="#contact">
-                                                <span className="relative bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-purple-500">My Socials</span>
-                                            </Link>
+                                            <span className="relative bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-purple-500">My Socials</span>
                                         </Button>
                                     </motion.div>
                                 </motion.div>
@@ -398,7 +421,7 @@ export default function HeroSection() {
                     <motion.div 
                         className="lg:w-1/2 flex justify-center"
                         initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         <motion.div 
@@ -428,7 +451,7 @@ export default function HeroSection() {
                     <motion.div 
                         className="relative pb-16 pt-8"
                         initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
                     >
                         {/* Background decoration */}
@@ -437,13 +460,13 @@ export default function HeroSection() {
                         <motion.div 
                             className="group relative m-auto max-w-6xl px-6"
                             initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ delay: 0.8 }}
                         >
                             <motion.div 
                                 className="relative py-6 w-full"
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                                 transition={{ delay: 1.0 }}
                             >
                                 <InfiniteSlider
