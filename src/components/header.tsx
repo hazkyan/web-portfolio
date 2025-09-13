@@ -7,10 +7,11 @@ import { ModeToggle } from './mode-toggle'
 import { ThemeLogo } from './theme-logo'
 
 const menuItems = [
-    { name: 'Features', href: '#link' },
-    { name: 'Solution', href: '#link' },
-    { name: 'Pricing', href: '#link' },
-    { name: 'About', href: '#link' },
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Tech Stack', href: '#technologies' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' },
 ]
 
 export const HeroHeader = () => {
@@ -24,6 +25,38 @@ export const HeroHeader = () => {
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
+
+    const scrollToSection = (href: string) => {
+        const targetId = href.replace('#', '')
+        const targetElement = document.getElementById(targetId)
+        
+        if (targetElement) {
+            // Close mobile menu if open
+            setMenuState(false)
+            
+            // Get the header height to offset the scroll position
+            const headerHeight = 80 // Approximate header height
+            const elementPosition = targetElement.getBoundingClientRect().top
+            const offsetPosition = elementPosition + window.pageYOffset - headerHeight
+
+            // Enhanced smooth scroll
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            })
+            
+            // Add a subtle flash effect to the target section
+            targetElement.style.transform = 'scale(1.005)'
+            targetElement.style.transition = 'transform 0.3s ease-out'
+            
+            setTimeout(() => {
+                targetElement.style.transform = 'scale(1)'
+                setTimeout(() => {
+                    targetElement.style.transition = ''
+                }, 300)
+            }, 100)
+        }
+    }
 
     return (
         <header>
@@ -66,14 +99,14 @@ export const HeroHeader = () => {
                                 <ul className="flex gap-8 text-sm">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
-                                            <Link
-                                                href={item.href}
-                                                className="group relative text-muted-foreground hover:text-accent-foreground block duration-300 transition-all hover:-translate-y-0.5">
+                                            <button
+                                                onClick={() => scrollToSection(item.href)}
+                                                className="group relative text-muted-foreground hover:text-accent-foreground block duration-300 transition-all hover:-translate-y-0.5 cursor-pointer">
                                                 <span className="relative">
                                                     {item.name}
                                                     <span className="absolute left-0 bottom-[-4px] h-[2px] w-0 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-full" />
                                                 </span>
-                                            </Link>
+                                            </button>
                                         </li>
                                     ))}
                                 </ul>
@@ -85,11 +118,11 @@ export const HeroHeader = () => {
                                 <ul className="space-y-6 text-base">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
-                                            <Link
-                                                href={item.href}
-                                                className="text-muted-foreground hover:text-accent-foreground block duration-150">
+                                            <button
+                                                onClick={() => scrollToSection(item.href)}
+                                                className="text-muted-foreground hover:text-accent-foreground block duration-150 w-full text-left cursor-pointer">
                                                 <span>{item.name}</span>
-                                            </Link>
+                                            </button>
                                         </li>
                                     ))}
                                 </ul>
