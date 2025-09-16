@@ -115,7 +115,7 @@ export default function IntegrationsSection() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 border border-blue-200 dark:border-blue-800 rounded-full text-blue-700 dark:text-blue-300">
-                            ⚡ Tech Stack
+                            🛠️ Learning Progress
                         </span>
                     </motion.div>
                     
@@ -134,7 +134,7 @@ export default function IntegrationsSection() {
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.6, delay: 0.6 }}
                     >
-                        Technical expertise and proficiency across different domains of software development
+                        Proficiency levels in programming languages and technologies gained through coursework and projects
                     </motion.p>
                 </motion.div>
 
@@ -149,30 +149,62 @@ export default function IntegrationsSection() {
                         <motion.button
                             key={category.id}
                             onClick={() => setActiveCategory(category.id)}
-                            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                            className={`relative flex items-center gap-3 px-8 py-4 rounded-xl font-semibold transition-all duration-300 overflow-hidden group ${
                                 activeCategory === category.id
-                                    ? 'bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-800 shadow-lg'
-                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25'
+                                    : 'bg-white/70 dark:bg-gray-800/70 text-gray-700 dark:text-gray-300 hover:bg-white/90 dark:hover:bg-gray-800/90 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60'
                             }`}
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
                             transition={{ duration: 0.4, delay: 0.9 + (index * 0.1) }}
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            {category.icon}
-                            {category.title}
+                            {/* Gradient background for active state */}
+                            {activeCategory === category.id && (
+                                <motion.div
+                                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    layoutId="activeTab"
+                                />
+                            )}
+                            
+                            {/* Content */}
+                            <div className="relative z-10 flex items-center gap-3">
+                                <motion.div
+                                    whileHover={{ rotate: 180 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    {category.icon}
+                                </motion.div>
+                                {category.title}
+                            </div>
+                            
+                            {/* Subtle glow effect */}
+                            <div className={`absolute inset-0 rounded-xl transition-opacity duration-300 ${
+                                activeCategory === category.id 
+                                    ? 'bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-xl opacity-100' 
+                                    : 'opacity-0'
+                            }`} />
                         </motion.button>
                     ))}
                 </motion.div>
 
                 {/* Skills Progress Bars */}
                 <motion.div 
-                    className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 p-8 shadow-xl"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                    className="bg-gradient-to-br from-white/80 via-white/90 to-white/80 dark:from-gray-900/80 dark:via-gray-900/90 dark:to-gray-900/80 backdrop-blur-lg rounded-3xl border border-gray-200/60 dark:border-gray-700/60 p-10 shadow-2xl hover:shadow-3xl transition-all duration-500"
+                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                    animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30, scale: 0.95 }}
                     transition={{ duration: 0.8, delay: 1.0 }}
+                    whileHover={{ y: -5 }}
                 >
+                    <motion.h3 
+                        className="text-center text-xl font-bold text-gray-800 dark:text-gray-200 mb-8"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                        transition={{ duration: 0.6, delay: 1.2 }}
+                    >
+                        {skillCategories.find(cat => cat.id === activeCategory)?.title} Skills
+                    </motion.h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {activeSkills.map((skill, index) => (
                             <SkillProgressBar 
@@ -278,26 +310,46 @@ const SkillProgressBar = ({ skill, index, isInView }: {
     index: number,
     isInView: boolean 
 }) => {
+    const getGradientColor = (level: number) => {
+        if (level >= 90) return "from-emerald-500 to-teal-500"
+        if (level >= 80) return "from-blue-500 to-cyan-500"
+        if (level >= 70) return "from-purple-500 to-violet-500"
+        return "from-orange-500 to-yellow-500"
+    }
+
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.6, delay: 1.2 + (index * 0.1) }}
-            className="space-y-3"
+            className="group p-4 rounded-xl bg-gradient-to-br from-gray-50/50 to-white/50 dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-gray-200/40 dark:border-gray-700/40 hover:border-gray-300/60 dark:hover:border-gray-600/60 hover:shadow-lg transition-all duration-300"
+            whileHover={{ y: -3, scale: 1.02 }}
         >
-            <div className="flex justify-between items-center">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+            <div className="flex justify-between items-center mb-3">
+                <h3 className="font-bold text-base text-gray-800 dark:text-gray-200 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text transition-all duration-300"
+                    style={{
+                        backgroundImage: skill.level >= 90 ? 'linear-gradient(135deg, #10b981, #14b8a6)' :
+                                         skill.level >= 80 ? 'linear-gradient(135deg, #3b82f6, #06b6d4)' :
+                                         skill.level >= 70 ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' :
+                                         'linear-gradient(135deg, #f59e0b, #eab308)'
+                    }}
+                >
                     {skill.name}
                 </h3>
-                <span className="text-sm font-bold text-gray-600 dark:text-gray-400">
+                <motion.span 
+                    className="text-sm font-bold text-gray-600 dark:text-gray-400 px-2 py-1 rounded-md bg-gray-100/80 dark:bg-gray-800/80"
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : { scale: 0 }}
+                    transition={{ duration: 0.3, delay: 1.4 + (index * 0.1) }}
+                >
                     {skill.level}%
-                </span>
+                </motion.span>
             </div>
             
-            <div className="relative">
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="relative mb-3">
+                <div className="w-full bg-gray-200/80 dark:bg-gray-700/80 rounded-full h-3 overflow-hidden shadow-inner">
                     <motion.div
-                        className="bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 h-2 rounded-full"
+                        className={`bg-gradient-to-r ${getGradientColor(skill.level)} h-3 rounded-full shadow-sm relative overflow-hidden`}
                         initial={{ width: 0 }}
                         animate={isInView ? { width: `${skill.level}%` } : { width: 0 }}
                         transition={{ 
@@ -305,13 +357,50 @@ const SkillProgressBar = ({ skill, index, isInView }: {
                             delay: 1.4 + (index * 0.1),
                             ease: "easeOut" 
                         }}
-                    />
+                    >
+                        {/* Animated shine effect */}
+                        <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                            initial={{ x: "-100%" }}
+                            animate={{ x: "200%" }}
+                            transition={{
+                                duration: 2,
+                                delay: 1.8 + (index * 0.1),
+                                ease: "easeInOut"
+                            }}
+                        />
+                    </motion.div>
                 </div>
             </div>
             
-            <p className="text-xs text-gray-500 dark:text-gray-500">
-                Language
-            </p>
+            <div className="flex items-center justify-between">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Proficiency
+                </p>
+                <motion.div 
+                    className="flex items-center gap-1"
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                    transition={{ duration: 0.4, delay: 1.6 + (index * 0.1) }}
+                >
+                    {[...Array(5)].map((_, i) => (
+                        <motion.div
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full ${
+                                i < Math.floor(skill.level / 20) 
+                                    ? `bg-gradient-to-r ${getGradientColor(skill.level)}`
+                                    : 'bg-gray-300 dark:bg-gray-600'
+                            }`}
+                            initial={{ scale: 0 }}
+                            animate={isInView ? { scale: 1 } : { scale: 0 }}
+                            transition={{ 
+                                duration: 0.2, 
+                                delay: 1.7 + (index * 0.1) + (i * 0.05) 
+                            }}
+                        />
+                    ))}
+                </motion.div>
+            </div>
         </motion.div>
     )
 }

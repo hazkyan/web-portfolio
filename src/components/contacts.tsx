@@ -7,20 +7,20 @@ import {
   Mail, 
   Github, 
   Linkedin, 
-  MessageSquare,
-  ExternalLink
+  MessageSquare
 } from 'lucide-react'
 import Link from 'next/link'
+import { ContactMethod } from '@/types'
 
 export default function Contact() {
     const sectionRef = useRef(null)
     const isInView = useInView(sectionRef, { once: false, amount: 0.2 })
 
-    const contactMethods = [
+    const contactMethods: ContactMethod[] = [
         {
             icon: <Mail className="size-8" />,
             title: "Email",
-            description: "Get in touch via email",
+            description: "Reach out for opportunities",
             value: "hazpoldev@gmail.com",
             href: "mailto:hazpoldev@gmail.com",
             gradient: "from-red-500 to-orange-500",
@@ -29,7 +29,7 @@ export default function Contact() {
         {
             icon: <Github className="size-8" />,
             title: "GitHub",
-            description: "Check out my repositories",
+            description: "Explore my coding projects",
             value: "@hazkyan",
             href: "https://github.com/hazkyan",
             gradient: "from-gray-600 to-gray-800",
@@ -38,7 +38,7 @@ export default function Contact() {
         {
             icon: <Linkedin className="size-8" />,
             title: "LinkedIn",
-            description: "Let's connect professionally",
+            description: "Connect professionally",
             value: "Hazpol Kyan",
             href: "https://www.linkedin.com/in/hazpoldev/",
             gradient: "from-blue-500 to-blue-700",
@@ -47,9 +47,9 @@ export default function Contact() {
         {
             icon: <MessageSquare className="size-8" />,
             title: "Telegram",
-            description: "Quick messaging",
-            value: "@hazhogen",
-            href: "https://t.me/hazhogen",
+            description: "Fast messaging",
+            value: "@hazkyan",
+            href: "https://t.me/hazkyan",
             gradient: "from-cyan-400 to-blue-500",
             color: "text-cyan-600 dark:text-cyan-400"
         }
@@ -57,11 +57,9 @@ export default function Contact() {
 
     return (
         <section ref={sectionRef} className="relative py-16 md:py-24 overflow-hidden" id="contact">
-            {/* Background decorations */}
             <div className="absolute inset-0 bg-gradient-to-b from-blue-50/20 via-transparent to-purple-50/20 dark:from-blue-950/10 dark:via-transparent dark:to-purple-950/10" />
             <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20" />
             
-            {/* Floating particles */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {[...Array(6)].map((_, i) => (
                     <motion.div
@@ -87,7 +85,6 @@ export default function Contact() {
             </div>
 
             <div className="mx-auto max-w-6xl px-6 relative z-10">
-                {/* Header section */}
                 <motion.div 
                     className="text-center mb-16"
                     initial={{ opacity: 0, y: 30 }}
@@ -101,11 +98,11 @@ export default function Contact() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 border border-blue-200 dark:border-blue-800 rounded-full text-blue-700 dark:text-blue-300">
-                            💬 Get In Touch
+                            🌟 Let&apos;s Network
                         </span>
                     </motion.div>
                     <motion.h2 
-                        className="text-balance text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent"
+                        className="text-balance text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent leading-tight px-4 sm:px-0"
                         initial={{ opacity: 0, y: 20 }}
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
@@ -118,13 +115,12 @@ export default function Contact() {
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.6, delay: 0.6 }}
                     >
-                        Ready to collaborate or have questions? Here&apos;s how you can reach me.
+                        Looking for internship opportunities or open to connecting with fellow students and professionals.
                     </motion.p>
                 </motion.div>
 
-                {/* Contact Methods Grid */}
                 <motion.div
-                    className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4 sm:px-0"
                     initial={{ opacity: 0, y: 50 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
@@ -183,7 +179,6 @@ export default function Contact() {
                     ))}
                 </motion.div>
 
-                {/* Quick Response Note */}
                 <motion.div
                     className="text-center mt-16"
                     initial={{ opacity: 0, y: 30 }}
@@ -191,7 +186,7 @@ export default function Contact() {
                     transition={{ duration: 0.8, delay: 1.6 }}
                 >
                     <Card className="max-w-md mx-auto shadow-xl bg-gradient-to-r from-blue-50/80 to-purple-50/80 dark:from-blue-950/30 dark:to-purple-950/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-800/50">
-                        <CardContent className="p-6 text-center">
+                        <CardContent className="p-6 sm:p-8 text-center min-h-[120px] sm:min-h-[140px] flex flex-col justify-center touch-manipulation">
                             <motion.div
                                 animate={{ 
                                     scale: [1, 1.05, 1],
