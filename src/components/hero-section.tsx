@@ -7,7 +7,6 @@ import { InfiniteSlider } from '@/components/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { motion, useInView } from 'framer-motion'
 
-// Floating particles component - Fixed positions to prevent hydration errors
 const FloatingParticles = () => {
     const particles = [
         { left: '15%', top: '20%', delay: '0s', duration: '3s' },
@@ -46,7 +45,6 @@ const FloatingParticles = () => {
     )
 }
 
-// Floating code snippets for the sides
 const FloatingCodeSnippets = () => {
     const leftSnippets = [
         { 
@@ -92,7 +90,7 @@ const FloatingCodeSnippets = () => {
 
     return (
         <>
-            {/* Left side snippets */}
+            {/* Desktop Code Panels - Hidden on Mobile */}
             <div className="absolute left-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
                 {leftSnippets.map((snippet, i) => (
                     <motion.div
@@ -127,7 +125,6 @@ const FloatingCodeSnippets = () => {
                 ))}
             </div>
 
-            {/* Right side snippets */}
             <div className="absolute right-4 top-0 h-full w-72 pointer-events-none z-10 hidden xl:block">
                 {rightSnippets.map((snippet, i) => (
                     <motion.div
@@ -165,63 +162,74 @@ const FloatingCodeSnippets = () => {
     )
 }
 
-// Interactive tech icons for medium+ screens
 const FloatingTechIcons = () => {
     const techIcons = [
-        { icon: '⚛️', name: 'React', left: '8%', top: '25%', delay: '0s' },
-        { icon: '🚀', name: 'Next.js', right: '8%', top: '20%', delay: '1s' },
-        { icon: '💾', name: 'Database', left: '5%', top: '60%', delay: '2s' },
-        { icon: '🎨', name: 'Design', right: '5%', top: '65%', delay: '3s' },
-        { icon: '⚡', name: 'Fast', left: '10%', top: '80%', delay: '4s' },
-        { icon: '🔧', name: 'Tools', right: '12%', top: '85%', delay: '5s' },
+        { icon: '⚛️', name: 'React', left: '12%', top: '20%', delay: '0s', color: 'from-blue-400 to-blue-600' },
+        { icon: '▲', name: 'Next.js', right: '8%', top: '15%', delay: '1s', color: 'from-gray-800 to-black' },
+        { icon: 'TS', name: 'TypeScript', left: '6%', top: '45%', delay: '2s', color: 'from-blue-600 to-blue-800' },
+        { icon: '🎨', name: 'Design', right: '10%', top: '40%', delay: '1.5s', color: 'from-purple-500 to-pink-600' },
+        { icon: '⚡', name: 'Performance', left: '8%', top: '70%', delay: '2.5s', color: 'from-yellow-400 to-orange-500' },
+        { icon: '🔧', name: 'Tools', right: '6%', top: '75%', delay: '3s', color: 'from-green-500 to-emerald-600' },
     ]
 
     return (
-        <div className="fixed inset-0 pointer-events-none z-10 lg:block xl:hidden">
+        <div className="xl:hidden fixed inset-0 pointer-events-none z-10 overflow-hidden">
+            {/* Mobile Floating Tech Icons */}
             {techIcons.map((tech, i) => (
                 <motion.div
                     key={i}
-                    className="absolute group"
+                    className="absolute"
                     style={{
                         left: tech.left,
                         right: tech.right,
                         top: tech.top,
                     }}
-                    initial={{ opacity: 0, scale: 0.5, rotate: 180 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    transition={{ 
-                        duration: 0.8, 
-                        delay: parseFloat(tech.delay),
-                        ease: "backOut"
+                    initial={{ opacity: 0, scale: 0.3, y: 50 }}
+                    animate={{ 
+                        opacity: [0.3, 0.7, 0.4], 
+                        scale: [0.8, 1, 0.9], 
+                        y: [0, -15, 0] 
                     }}
-                    whileHover={{ 
-                        scale: 1.2,
-                        rotate: [0, -10, 10, 0],
-                        transition: { duration: 0.3 }
+                    transition={{ 
+                        duration: 4,
+                        delay: parseFloat(tech.delay),
+                        repeat: Infinity,
+                        ease: "easeInOut"
                     }}
                 >
-                    <motion.div 
-                        className="relative"
-                        animate={{ 
-                            y: [0, -10, 0],
-                            rotate: [0, 5, -5, 0]
-                        }}
-                        transition={{
-                            duration: 4,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            delay: i * 0.5
-                        }}
-                    >
-                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300 animate-float">
-                            {tech.icon}
-                        </div>
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900/90 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                            {tech.name}
-                        </div>
-                    </motion.div>
+                    <div className={`w-12 h-12 bg-gradient-to-r ${tech.color} rounded-xl shadow-lg flex items-center justify-center text-white font-bold backdrop-blur-sm border border-white/10`}>
+                        <span className="text-sm">{tech.icon}</span>
+                    </div>
                 </motion.div>
             ))}
+
+            {/* Mobile Background Pattern */}
+            <div className="absolute inset-0 opacity-5">
+                <motion.div 
+                    className="absolute top-1/4 left-1/4 w-32 h-32 border border-blue-500/30 rounded-full"
+                    animate={{ 
+                        scale: [1, 1.2, 1],
+                        opacity: [0.3, 0.7, 0.3] 
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div 
+                    className="absolute bottom-1/3 right-1/4 w-24 h-24 border border-purple-500/30 rounded-full"
+                    animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [0.4, 0.8, 0.4] 
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                />
+                <motion.div 
+                    className="absolute top-2/3 left-1/6 w-16 h-16 border border-green-500/30 rounded-full"
+                    animate={{ 
+                        scale: [1, 1.4, 1],
+                        opacity: [0.2, 0.6, 0.2] 
+                    }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                />
+            </div>
         </div>
     )
 }
@@ -234,7 +242,7 @@ export default function HeroSection() {
         const rect = e.currentTarget.getBoundingClientRect()
         setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top })
     }
-    const roles = React.useRef<string[]>(["Developer", "Designer", "Data Analyst"]) // cycling words
+    const roles = React.useRef<string[]>(["Developer", "Designer", "Data Analyst"])
     const [typed, setTyped] = React.useState<string>("")
     const [roleIndex, setRoleIndex] = React.useState<number>(0)
     const [isDeleting, setIsDeleting] = React.useState<boolean>(false)
@@ -273,18 +281,15 @@ export default function HeroSection() {
                     <FloatingParticles />
                     <FloatingCodeSnippets />
                     
-                    {/* Enhanced animated background with gradient overlay */}
                     <div className="absolute inset-0 -z-20">
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/20" />
                         <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_70%,transparent_110%)] opacity-30 animate-pulse" />
                     </div>
                     
-                    {/* Subtle glow effect */}
                     <div className="absolute inset-0 -z-10">
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
                     </div>
                     
-                    {/* Main hero content */}
                     <div className="relative flex-1 flex items-center pb-8 pt-32 md:pt-44 w-full" onMouseMove={onMove}>
                         <div
                             className="pointer-events-none absolute inset-0 -z-10 transition-all duration-300"
@@ -317,7 +322,7 @@ export default function HeroSection() {
                                         </span>
                                     </motion.div>
                                     <motion.h1 
-                                        className="max-w-2xl bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-balance text-4xl lg:text-5xl xl:text-6xl font-bold text-transparent transition-all duration-500 hover:-translate-y-1"
+                                        className="max-w-2xl bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-balance text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-transparent transition-all duration-500 hover:-translate-y-1 leading-tight"
                                         initial={{ opacity: 0, y: 30 }}
                                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                                         transition={{ duration: 0.8, delay: 0.6 }}
@@ -326,21 +331,9 @@ export default function HeroSection() {
                                         Hi, I&apos;m Haz
                                     </motion.h1>
                                 </div>
+                                
                                 <motion.p 
-                                    className="mt-3 text-base lg:text-lg text-muted-foreground"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                    transition={{ duration: 0.6, delay: 0.8 }}
-                                >
-                                    I&apos;m a
-                                    {' '}
-                                    <span className="relative font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                        {typed}
-                                        <span className="ml-1 inline-block h-5 w-[2px] translate-y-[2px] bg-blue-500 animate-pulse"></span>
-                                    </span>
-                                </motion.p>
-                                <motion.p 
-                                    className="mt-4 max-w-2xl text-pretty text-base lg:text-lg leading-relaxed text-muted-foreground"
+                                    className="mt-4 max-w-2xl text-pretty text-sm sm:text-base lg:text-lg leading-relaxed text-muted-foreground px-4 sm:px-0"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                                     transition={{ duration: 0.6, delay: 1.0 }}
@@ -356,6 +349,7 @@ export default function HeroSection() {
                                     <span className="relative whitespace-nowrap font-medium text-foreground after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full">Supabase</span>.
                                     {' '}
                                     <span className="font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">THE BEST VIBE CODER AVAILABLE IN THE MARKET :D</span>
+                                    <br></br>(also improving my data analysis skills)
                                 </motion.p>
 
                                 <motion.div 
@@ -385,7 +379,7 @@ export default function HeroSection() {
                                                 }
                                             }}
                                             className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-base font-medium transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25">
-                                            <span className="relative z-10 text-white">View Projects</span>
+                                            <span className="relative z-10 text-white">View My Work</span>
                                             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                         </Button>
                                     </motion.div>
@@ -411,13 +405,12 @@ export default function HeroSection() {
                                                 }
                                             }}
                                             className="group border-2 border-gradient-to-r from-blue-500 to-purple-500 px-8 py-3 text-base font-medium transition-all duration-300 hover:shadow-lg hover:border-blue-400 dark:hover:border-purple-400">
-                                            <span className="relative bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-purple-500">My Socials</span>
+                                            <span className="relative bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-purple-500">Connect With Me</span>
                                         </Button>
                                     </motion.div>
                                 </motion.div>
                             </motion.div>
                     
-                    {/* Right Side - Visual Elements */}
                     <motion.div 
                         className="lg:w-1/2 flex justify-center"
                         initial={{ opacity: 0, x: 50 }}
@@ -447,14 +440,12 @@ export default function HeroSection() {
                 </motion.div>
                 </div>
                 
-                    {/* Tech Skills Section - Now part of the hero */}
                     <motion.div 
                         className="relative pb-16 pt-8"
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
                     >
-                        {/* Background decoration */}
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/20 to-transparent dark:via-blue-950/10" />
                         
                         <motion.div 

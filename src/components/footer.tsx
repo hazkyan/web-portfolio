@@ -48,33 +48,68 @@ export default function FooterSection() {
     }
     
     return (
-        <footer ref={sectionRef} className="py-16 md:py-32">
-            <div className="mx-auto max-w-5xl px-6">
+        <footer ref={sectionRef} className="relative py-12 md:py-16 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-10" />
+            
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {[...Array(6)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-30"
+                        style={{
+                            left: `${15 + i * 15}%`,
+                            top: `${20 + (i % 3) * 30}%`,
+                        }}
+                        animate={{ 
+                            y: [0, -20, 0],
+                            opacity: [0.3, 0.6, 0.3],
+                        }}
+                        transition={{
+                            duration: 3 + i * 0.5,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: i * 0.5,
+                        }}
+                    />
+                ))}
+            </div>
+
+            <div className="relative z-10 mx-auto max-w-5xl px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                     transition={{ duration: 0.8 }}
+                    className="text-center"
                 >
                     <Link
                         href="/"
                         aria-label="go home"
-                        className="group mx-auto w-fit flex items-center gap-3 transition-all duration-300 hover:-translate-y-1">
+                        className="group mx-auto w-fit flex items-center gap-3 transition-all duration-300 hover:-translate-y-1 mb-6">
                         <div className="relative">
                             <ThemeLogo 
                                 width={32} 
                                 height={32} 
                                 className="h-8 w-8 transition-transform duration-300 group-hover:scale-110" 
                             />
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-30 -z-10" />
+                            <motion.div 
+                                className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-40 -z-10"
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            />
                         </div>
-                        <span className="text-xl font-bold tracking-wide bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                            hazkyan
-                        </span>
+                        <div className="text-center">
+                            <span className="text-xl font-bold tracking-wide bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300 block">
+                                hazkyan
+                            </span>
+                            <span className="text-xs text-muted-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                                CS Student & Developer
+                            </span>
+                        </div>
                     </Link>
                 </motion.div>
 
                 <motion.div 
-                    className="my-8 flex flex-wrap justify-center gap-6 text-sm"
+                    className="my-8 grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-4 text-sm"
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
@@ -85,17 +120,22 @@ export default function FooterSection() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                             transition={{ duration: 0.4, delay: 0.3 + (index * 0.1) }}
+                            className="group"
                         >
                             <button
                                 onClick={() => scrollToSection(link.href)}
-                                className="text-muted-foreground hover:text-primary block duration-150 transition-colors">
-                                <span>{link.title}</span>
+                                className="relative text-muted-foreground hover:text-foreground transition-all duration-300 font-medium px-3 py-1.5 rounded-lg hover:bg-gray-100/50 dark:hover:bg-gray-800/50 backdrop-blur-sm group-hover:scale-105 w-full text-center md:w-auto">
+                                <span className="relative z-10">{link.title}</span>
+                                <motion.div
+                                    className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    whileHover={{ scale: 1.05 }}
+                                />
                             </button>
                         </motion.div>
                     ))}
                 </motion.div>
                 <motion.div 
-                    className="my-8 flex flex-wrap justify-center gap-6 text-sm"
+                    className="my-8 flex flex-wrap justify-center gap-4"
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
@@ -105,9 +145,13 @@ export default function FooterSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="GitHub"
-                        className="text-muted-foreground hover:text-primary block transition-all duration-300 hover:scale-110 hover:-translate-y-1">
+                        className="group relative p-2.5 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:shadow-lg">
+                        <motion.div 
+                            className="absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                            whileHover={{ scale: 1.05 }}
+                        />
                         <svg
-                            className="size-6"
+                            className="size-5 relative z-10"
                             xmlns="http://www.w3.org/2000/svg"
                             width="1em"
                             height="1em"
@@ -122,9 +166,13 @@ export default function FooterSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="LinkedIn"
-                        className="text-muted-foreground hover:text-primary block transition-all duration-300 hover:scale-110 hover:-translate-y-1">
+                        className="group relative p-2.5 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:shadow-lg">
+                        <motion.div 
+                            className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                            whileHover={{ scale: 1.05 }}
+                        />
                         <svg
-                            className="size-6"
+                            className="size-5 relative z-10"
                             xmlns="http://www.w3.org/2000/svg"
                             width="1em"
                             height="1em"
@@ -139,9 +187,13 @@ export default function FooterSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Email"
-                        className="text-muted-foreground hover:text-primary block transition-all duration-300 hover:scale-110 hover:-translate-y-1">
+                        className="group relative p-2.5 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:shadow-lg">
+                        <motion.div 
+                            className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                            whileHover={{ scale: 1.05 }}
+                        />
                         <svg
-                            className="size-6"
+                            className="size-5 relative z-10"
                             xmlns="http://www.w3.org/2000/svg"
                             width="1em"
                             height="1em"
@@ -156,9 +208,13 @@ export default function FooterSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Telegram"
-                        className="text-muted-foreground hover:text-primary block transition-all duration-300 hover:scale-110 hover:-translate-y-1">
+                        className="group relative p-2.5 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:shadow-lg">
+                        <motion.div 
+                            className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                            whileHover={{ scale: 1.05 }}
+                        />
                         <svg
-                            className="size-6"
+                            className="size-5 relative z-10"
                             xmlns="http://www.w3.org/2000/svg"
                             width="1em"
                             height="1em"
@@ -169,14 +225,41 @@ export default function FooterSection() {
                         </svg>
                     </Link>
                 </motion.div>
-                <motion.span 
-                    className="text-muted-foreground block text-center text-sm"
+                <motion.div
+                    className="border-t border-gray-200/50 dark:border-gray-700/50 pt-6 mt-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.6, delay: 0.6 }}
                 >
-                    © {new Date().getFullYear()} hazkyan. All rights reserved
-                </motion.span>
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+                        <motion.span 
+                            className="text-muted-foreground text-sm"
+                            whileHover={{ scale: 1.02 }}
+                        >
+                            © {new Date().getFullYear()} hazkyan. CS Student Portfolio
+                        </motion.span>
+                        
+                        <motion.div 
+                            className="flex items-center gap-2 text-xs text-muted-foreground"
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                            transition={{ duration: 0.4, delay: 0.8 }}
+                        >
+                            <span>Built with</span>
+                            <motion.span
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                className="text-red-500"
+                            >
+                                ❤️
+                            </motion.span>
+                            <span>and</span>
+                            <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                                Next.js
+                            </span>
+                        </motion.div>
+                    </div>
+                </motion.div>
             </div>
         </footer>
     )

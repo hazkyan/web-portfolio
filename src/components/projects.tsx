@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { 
-  ExternalLink, 
   Github, 
   Calendar,
   Code,
@@ -19,64 +18,24 @@ export default function Projects() {
     
     const projects = [
         {
-            title: "Next.js Portfolio Website",
-            description: "A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Features dark mode, smooth animations, and optimized performance.",
+            title: "Mini Compiler in Java",
+            description: "Final project for Compiler Construction course, implementing a complete compiler pipeline including lexical analyzer, recursive descent parser, semantic analyzer, and code generator. Gained hands-on experience with formal language theory and compiler design principles taught in class.",
             image: "/placeholder-project1.jpg",
-            tags: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-            githubUrl: "https://github.com/hazkyan/web-portfolio",
-            liveUrl: "https://your-portfolio.vercel.app",
+            tags: ["Java", "Compiler Design", "Lexical Analysis", "Parser", "Code Generation"],
+            githubUrl: "https://github.com/hazkyan/miniCompilerTpl",
+            liveUrl: null,
             featured: true,
             date: "2024"
         },
         {
-            title: "Java Design Patterns Library",
-            description: "Comprehensive implementation of classic design patterns in Java. Educational resource demonstrating best practices and object-oriented programming principles.",
+            title: "Student Attendance Tracker",
+            description: "Group project for Software Engineering course, developing a full-stack web application with user authentication and database integration. Applied software development lifecycle methodologies, version control practices, and collaborative coding techniques learned throughout the program.",
             image: "/placeholder-project2.jpg",
-            tags: ["Java", "Design Patterns", "OOP", "Documentation"],
-            githubUrl: "https://github.com/hazkyan/design-patterns",
+            tags: ["Full-Stack", "Web Development", "Database", "Authentication", "Analytics"],
+            githubUrl: "https://github.com/DarylTManampan/se2-project",
             liveUrl: null,
             featured: true,
             date: "2024"
-        },
-        {
-            title: "Python Data Analysis Tool",
-            description: "Data visualization and analysis tool built with Python, Pandas, and NumPy. Features interactive charts and statistical analysis capabilities.",
-            image: "/placeholder-project3.jpg",
-            tags: ["Python", "Pandas", "NumPy", "Data Science"],
-            githubUrl: "https://github.com/hazkyan/data-analysis",
-            liveUrl: "https://data-tool.vercel.app",
-            featured: false,
-            date: "2024"
-        },
-        {
-            title: "MySQL Database Manager",
-            description: "Web-based database management interface with CRUD operations, query builder, and data visualization. Built with modern web technologies.",
-            image: "/placeholder-project4.jpg",
-            tags: ["MySQL", "PHP", "JavaScript", "Bootstrap"],
-            githubUrl: "https://github.com/hazkyan/db-manager",
-            liveUrl: null,
-            featured: false,
-            date: "2023"
-        },
-        {
-            title: "React Component Library",
-            description: "Reusable React components with TypeScript support, comprehensive documentation, and Storybook integration for modern web applications.",
-            image: "/placeholder-project5.jpg",
-            tags: ["React", "TypeScript", "Storybook", "CSS"],
-            githubUrl: "https://github.com/hazkyan/react-components",
-            liveUrl: "https://components.vercel.app",
-            featured: false,
-            date: "2023"
-        },
-        {
-            title: "Machine Learning Playground",
-            description: "Interactive platform for experimenting with machine learning algorithms using PyTorch and scikit-learn with Jupyter notebook integration.",
-            image: "/placeholder-project6.jpg",
-            tags: ["Python", "PyTorch", "scikit-learn", "Jupyter"],
-            githubUrl: "https://github.com/hazkyan/ml-playground",
-            liveUrl: null,
-            featured: false,
-            date: "2023"
         }
     ]
 
@@ -126,7 +85,7 @@ export default function Projects() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 border border-blue-200 dark:border-blue-800 rounded-full text-blue-700 dark:text-blue-300">
-                            💼 My Work
+                            🎓 Academic Projects
                         </span>
                     </motion.div>
                     <motion.h2 
@@ -135,7 +94,7 @@ export default function Projects() {
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
-                        Featured Projects
+                        My Projects
                     </motion.h2>
                     <motion.p 
                         className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto"
@@ -143,18 +102,18 @@ export default function Projects() {
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.6, delay: 0.6 }}
                     >
-                        A showcase of my development projects, from web applications to data science tools
+                        Course projects and personal learning endeavors in computer science fundamentals
                     </motion.p>
                 </motion.div>
 
                 {/* Featured Projects */}
                 <motion.div 
-                    className="grid gap-8 lg:grid-cols-2 mb-16"
+                    className="grid gap-8 lg:grid-cols-2 mb-12"
                     initial={{ opacity: 0 }}
                     animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
                 >
-                    {projects.filter(project => project.featured).map((project, index) => (
+                    {projects.map((project, index) => (
                         <motion.div
                             key={project.title}
                             initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -169,42 +128,55 @@ export default function Projects() {
                             }}
                             transition={{ 
                                 duration: 0.6, 
-                                delay: 0.9 + (index * 0.1),
+                                delay: 0.9 + (index * 0.2),
                                 ease: "easeOut" 
                             }}
                             whileHover={{ 
-                                y: -8,
+                                y: -12,
+                                scale: 1.02,
                                 transition: { duration: 0.3 }
                             }}
                         >
-                            <Card className="group border-0 shadow-lg bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 h-full overflow-hidden relative">
-                                {/* Project image placeholder */}
-                                <div className="relative h-48 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20">
+                            <Card className="group border-0 shadow-xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 h-full overflow-hidden relative">
+                                {/* Enhanced glassmorphism overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-blue-50/30 to-purple-50/20 dark:from-gray-800/20 dark:via-blue-900/10 dark:to-purple-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                
+                                {/* Project image placeholder with enhanced gradients */}
+                                <div className={`relative h-52 ${index === 0 
+                                    ? 'bg-gradient-to-br from-orange-100 via-yellow-50 to-red-100 dark:from-orange-900/30 dark:via-yellow-900/20 dark:to-red-900/30' 
+                                    : 'bg-gradient-to-br from-green-100 via-blue-50 to-cyan-100 dark:from-green-900/30 dark:via-blue-900/20 dark:to-cyan-900/30'
+                                }`}>
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <Code className="size-16 text-blue-500/30" />
+                                        <Code className="size-20 text-opacity-40" style={{
+                                            color: index === 0 ? '#f59e0b' : '#3b82f6'
+                                        }} />
                                     </div>
                                     <div className="absolute top-4 right-4">
-                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-white/90 dark:bg-gray-900/90 rounded-full text-xs font-medium">
-                                            <Star className="size-3 fill-yellow-400 text-yellow-400" />
+                                        <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-full text-sm font-semibold shadow-lg">
+                                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
                                             Featured
                                         </span>
                                     </div>
                                     <div className="absolute bottom-4 left-4">
-                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-white/90 dark:bg-gray-900/90 rounded-full text-xs font-medium">
-                                            <Calendar className="size-3" />
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-full text-sm font-medium shadow-lg">
+                                            <Calendar className="size-4" />
                                             {project.date}
                                         </span>
                                     </div>
+                                    
+                                    {/* Floating accent elements */}
+                                    <div className="absolute top-8 left-8 w-3 h-3 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-60 animate-pulse" />
+                                    <div className="absolute bottom-8 right-12 w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full opacity-40 animate-pulse" style={{animationDelay: '0.5s'}} />
                                 </div>
 
-                                <CardHeader className="pb-4">
-                                    <h3 className="text-xl font-bold group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                                <CardHeader className="pb-4 relative z-10">
+                                    <h3 className="text-2xl font-bold group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-500">
                                         {project.title}
                                     </h3>
                                 </CardHeader>
 
-                                <CardContent className="space-y-4">
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
+                                <CardContent className="space-y-6 relative z-10">
+                                    <p className="text-base text-muted-foreground leading-relaxed">
                                         {project.description}
                                     </p>
                                     
@@ -212,38 +184,39 @@ export default function Projects() {
                                         {project.tags.map((tag, tagIndex) => (
                                             <motion.span
                                                 key={tag}
-                                                className="px-2 py-1 text-xs font-medium bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200 dark:border-blue-800 rounded-md text-blue-700 dark:text-blue-300"
+                                                className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-blue-500/15 to-purple-500/15 border border-blue-200/60 dark:border-blue-800/60 rounded-lg text-blue-700 dark:text-blue-300 backdrop-blur-sm hover:from-blue-500/25 hover:to-purple-500/25 transition-all duration-300"
                                                 initial={{ opacity: 0, scale: 0.8 }}
                                                 animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
                                                 transition={{ 
                                                     duration: 0.4, 
-                                                    delay: 1.2 + (index * 0.1) + (tagIndex * 0.05) 
+                                                    delay: 1.2 + (index * 0.2) + (tagIndex * 0.1) 
                                                 }}
+                                                whileHover={{ scale: 1.05 }}
                                             >
                                                 {tag}
                                             </motion.span>
                                         ))}
                                     </div>
 
-                                    <div className="flex gap-3 pt-4">
+                                    <div className="flex gap-4 pt-4">
                                         <Button
                                             asChild
-                                            size="sm"
+                                            size="lg"
                                             variant="outline"
-                                            className="group border-gray-300 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300">
+                                            className="group border-2 border-gray-300/60 hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/30 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
                                             <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                                                <Github className="size-4 mr-2" />
-                                                <span className="text-sm">Code</span>
+                                                <Github className="size-5 mr-2 group-hover:text-blue-600 transition-colors duration-300" />
+                                                <span className="text-base font-medium">View Code</span>
                                             </Link>
                                         </Button>
                                         {project.liveUrl && (
                                             <Button
                                                 asChild
-                                                size="sm"
-                                                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                                                size="lg"
+                                                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300">
                                                 <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                                                    <Globe className="size-4 mr-2" />
-                                                    <span className="text-sm">Live Demo</span>
+                                                    <Globe className="size-5 mr-2" />
+                                                    <span className="text-base font-medium">Live Demo</span>
                                                 </Link>
                                             </Button>
                                         )}
@@ -254,82 +227,18 @@ export default function Projects() {
                     ))}
                 </motion.div>
 
-                {/* Other Projects */}
-                <motion.div 
-                    className="space-y-4"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                    transition={{ duration: 0.8, delay: 1.4 }}
-                >
-                    <h3 className="text-2xl font-bold text-center mb-8">Other Projects</h3>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {projects.filter(project => !project.featured).map((project, index) => (
-                            <motion.div
-                                key={project.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ 
-                                    duration: 0.5, 
-                                    delay: 1.5 + (index * 0.1) 
-                                }}
-                                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                            >
-                                <Card className="group border-0 shadow-md bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm hover:shadow-lg transition-all duration-300 h-full">
-                                    <CardHeader className="pb-3">
-                                        <div className="flex items-start justify-between">
-                                            <h4 className="font-semibold text-lg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                                                {project.title}
-                                            </h4>
-                                            <span className="text-xs text-muted-foreground">{project.date}</span>
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="space-y-3">
-                                        <p className="text-sm text-muted-foreground leading-relaxed">
-                                            {project.description}
-                                        </p>
-                                        <div className="flex flex-wrap gap-1">
-                                            {project.tags.slice(0, 3).map((tag) => (
-                                                <span
-                                                    key={tag}
-                                                    className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400">
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                            {project.tags.length > 3 && (
-                                                <span className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400">
-                                                    +{project.tags.length - 3}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className="flex gap-2 pt-2">
-                                            <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                                                <Github className="size-5 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300" />
-                                            </Link>
-                                            {project.liveUrl && (
-                                                <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                                                    <ExternalLink className="size-5 text-gray-600 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors duration-300" />
-                                                </Link>
-                                            )}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        ))}
-                    </div>
-                </motion.div>
-
                 {/* Call to action */}
                 <motion.div 
-                    className="text-center mt-16"
+                    className="text-center mt-20"
                     initial={{ opacity: 0, y: 30 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                    transition={{ duration: 0.8, delay: 2.0 }}
+                    transition={{ duration: 0.8, delay: 1.6 }}
                 >
                     <motion.p 
                         className="text-lg text-muted-foreground mb-6"
                         whileHover={{ scale: 1.02 }}
                     >
-                        Want to see more of my work?
+                        Want to see more of my academic work and coding journey?
                     </motion.p>
                     <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                         <motion.div
@@ -343,7 +252,7 @@ export default function Projects() {
                                 className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-base font-medium transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25">
                                 <Link href="https://github.com/hazkyan" target="_blank" rel="noopener noreferrer">
                                     <Github className="size-4 mr-2" />
-                                    <span className="relative z-10 text-white">View GitHub</span>
+                                    <span className="relative z-10 text-white">View All Repositories</span>
                                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                 </Link>
                             </Button>
